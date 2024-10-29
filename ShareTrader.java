@@ -1,36 +1,52 @@
-class ShareTrader {
-    static int maxProfit = 0;
+public class ShareTrader {
+    static int maxProfit;
 
-    public static int findMaxProfit(int[] prices) {
-        int n = prices.length;
-        int[] profitBefore = new int[n];
-        int[] profitAfter = new int[n];
-
-        int minPrice = prices[0];
-        for (int i = 1; i < n; i++) {
-            minPrice = Math.min(minPrice, prices[i]);
-            profitBefore[i] = Math.max(profitBefore[i - 1], prices[i] - minPrice);
+    public static void findMaxProfit(int[] price) {
+        int N = price.length;
+        if (N == 0) {
+            maxProfit = 0;
+            return;
         }
 
-        int maxPrice = prices[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            maxPrice = Math.max(maxPrice, prices[i]);
-            profitAfter[i] = Math.max(profitAfter[i + 1], maxPrice - prices[i]);
+        int[] maxProfitLeft = new int[N];
+        int[] maxProfitRight = new int[N];
+
+        int minPrice = price[0];
+        maxProfitLeft[0] = 0;
+        for (int i = 1; i < N; i++) {
+            minPrice = Math.min(minPrice, price[i]);
+            maxProfitLeft[i] = Math.max(maxProfitLeft[i - 1], price[i] - minPrice);
         }
 
-        for (int i = 0; i < n; i++) {
-            maxProfit = Math.max(maxProfit, profitBefore[i] + profitAfter[i]);
+        int maxPrice = price[N - 1];
+        maxProfitRight[N - 1] = 0;
+        for (int i = N - 2; i >= 0; i--) {
+            maxPrice = Math.max(maxPrice, price[i]);
+            maxProfitRight[i] = Math.max(maxProfitRight[i + 1], maxPrice - price[i]);
         }
-        
-        return maxProfit;
+
+        int maxTotalProfit = 0;
+        for (int i = 0; i < N; i++) {
+            int totalProfit = maxProfitLeft[i] + maxProfitRight[i];
+            if (totalProfit > maxTotalProfit) {
+                maxTotalProfit = totalProfit;
+            }
+        }
+
+        maxProfit = maxTotalProfit;
     }
 
     public static void main(String[] args) {
         int[] price1 = {10, 22, 5, 75, 65, 80};
+        findMaxProfit(price1);
+        System.out.println("Maximum Profit: " + maxProfit); // Expected Output: 87
+
         int[] price2 = {2, 30, 15, 10, 8, 25, 80};
-        
-        System.out.println("Max Profit for price1: " + findMaxProfit(price1));
-        maxProfit = 0;
-        System.out.println("Max Profit for price2: " + findMaxProfit(price2));
+        findMaxProfit(price2);
+        System.out.println("Maximum Profit: " + maxProfit); // Expected Output: 100
+
+        int[] price3 = {100, 90, 80, 70, 60};
+        findMaxProfit(price3);
+        System.out.println("Maximum Profit: " + maxProfit); // Expected Output: 0
     }
 }
