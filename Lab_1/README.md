@@ -1,0 +1,3 @@
+**Credit Card Validator**
+
+The program takes the user input for credit card no. with minimum of 8 digits and maximum of 9 digits. Then it validates the card number based on several steps. We didn't use a switch-case in the provided code because switch-case is typically used when you have multiple discrete conditions or values to handle. In this case, the validation process follows a sequential series of steps (from Step a to Step f), where each step depends on the result of the previous one. There aren't specific conditions or cases that would vary for each step, so a linear control flow (like if-else or direct method calls) is more appropriate.
